@@ -165,15 +165,14 @@ public class Info {
         System.out.println();
     }
 
-    public void writeCoach() throws SQLException {
-        Scanner s = new Scanner(System.in);
+    public void writeCoach(Scanner s) throws SQLException {
         int id;
         String name;
         String surname;
+        System.out.println("Введите id, имя и фамилию тренера");
         id = s.nextInt();
         name = s.next();
         surname = s.nextLine();
-        s.close();
         PreparedStatement statement = DBConnector.dbcon.prepareStatement("INSERT INTO coach( id, name, surname ) VALUES(?, ?, ?)");
         statement.setInt(1, id);
         statement.setString(2, name);
@@ -184,13 +183,12 @@ public class Info {
         System.out.println(" row was added to table coach");
     }
 
-    public void writeCountry() throws SQLException {
-        Scanner s = new Scanner(System.in);
+    public void writeCountry(Scanner s) throws SQLException {
         int id;
         String country;
+        System.out.println("Введите id и название страны");
         id = s.nextInt();
         country = s.nextLine();
-        s.close();
         PreparedStatement statement = DBConnector.dbcon.prepareStatement("INSERT INTO country( id, name) VALUES(?, ?)");
         statement.setInt(1, id);
         statement.setString(2, country);
@@ -200,13 +198,12 @@ public class Info {
         System.out.println(" row was added to table country");
     }
 
-    public void writeCities() throws SQLException {
-        Scanner s = new Scanner(System.in);
+    public void writeCities(Scanner s) throws SQLException {
         int id;
         String city;
+        System.out.println("Введите id и название города");
         id = s.nextInt();
         city = s.nextLine();
-        s.close();
         PreparedStatement statement = DBConnector.dbcon.prepareStatement("INSERT INTO cities( id, city) VALUES(?, ?)");
         statement.setInt(1, id);
         statement.setString(2, city);
@@ -216,18 +213,19 @@ public class Info {
         System.out.println(" row was added to table city");
     }
 
-    public void showStatistic() throws SQLException {
-        Scanner s = new Scanner(System.in);
+    public void showStatistic(Scanner s) throws SQLException {
+        System.out.println("Список аналогичных соревнований");
+        System.out.println("Введите название соревнования:");
         String name;
         name = s.nextLine();
         System.out.println(name);
-        s.close();
-        String st = "SELECT findComp('"+ name+ "')";
+//        s.close();
+        String st = "SELECT findComp('" + name + "')";
         PreparedStatement statement = DBConnector.dbcon.prepareStatement(st);
         ResultSet chars = statement.executeQuery();
         ResultSetMetaData rmChar = chars.getMetaData();
         System.out.printf("%-50s ", rmChar.getColumnName(1)
-                );
+        );
         System.out.println();
         if (!chars.isBeforeFirst()) {
             System.out.println("Ничего не найдено!");

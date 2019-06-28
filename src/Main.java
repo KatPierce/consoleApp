@@ -7,7 +7,8 @@ public class Main {
         DBConnector c =new DBConnector();
         c.dbConnect();
         Scanner scanner = new Scanner(System.in);
-        Menu.mainMenu(scanner);
-
+        while(true) {
+            Menu.mainMenu(scanner);
+        }
     }
 }

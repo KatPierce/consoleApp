@@ -42,13 +42,13 @@ class Menu {
                     break;
                 case 16: inf.showCoach();
                     break;
-                case 22: inf.writeCountry();
+                case 22: inf.writeCountry(scanner);
                     break;
-                case 25: inf.writeCities();
+                case 25: inf.writeCities(scanner);
                     break;
-                case 26: inf.writeCoach();
+                case 26: inf.writeCoach(scanner);
                     break;
-                case 3: inf.showStatistic();
+                case 3: inf.showStatistic(scanner);
                     break;
                 case 4:
                     dbc.dbDisconnect();

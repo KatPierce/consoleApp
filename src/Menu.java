@@ -42,10 +42,20 @@ class Menu {
                     break;
                 case 16: inf.showCoach();
                     break;
+                case 22: inf.writeCountry();
+                    break;
+                case 25: inf.writeCities();
+                    break;
+                case 26: inf.writeCoach();
+                    break;
+                case 3: inf.showStatistic();
+                    break;
                 case 4:
                     dbc.dbDisconnect();
                     exit(0);
                     break;
+                    default:
+                        System.out.println("Неверный код");
 
             }
         } catch (Exception e) {

@@ -2,10 +2,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Info {
-    public void showCharacters()throws SQLException
-     {
+    public void showCharacters() throws SQLException {
         PreparedStatement statement = DBConnector.dbcon.prepareStatement("SELECT * FROM fskaters");
         System.out.println("__________________________");
         System.out.println("Фигуристы:");
@@ -21,7 +21,7 @@ public class Info {
         }
         while (chars.next()) {
             System.out.format("%-10d %-15s %-15s %-15s %-10s", chars.getInt(1),
-                    chars.getString(2),  chars.getString(3),
+                    chars.getString(2), chars.getString(3),
                     chars.getObject(4), chars.getObject(5));
             System.out.println();
         }
@@ -33,8 +33,7 @@ public class Info {
         System.out.println();
     }
 
-    public void showCountry()throws SQLException
-    {
+    public void showCountry() throws SQLException {
         PreparedStatement statement = DBConnector.dbcon.prepareStatement("SELECT * FROM country");
         System.out.println("__________________________");
         System.out.println("Страны:");
@@ -60,8 +59,7 @@ public class Info {
         System.out.println();
     }
 
-    public void showCompetition()throws SQLException
-    {
+    public void showCompetition() throws SQLException {
         PreparedStatement statement = DBConnector.dbcon.prepareStatement("SELECT * FROM competition");
         System.out.println("__________________________");
         System.out.println("Соревнования:");
@@ -77,7 +75,7 @@ public class Info {
         }
         while (chars.next()) {
             System.out.format("%-10d %-25s %-15d %-15s", chars.getInt(1),
-                    chars.getString(2),  chars.getInt(3),
+                    chars.getString(2), chars.getInt(3),
                     chars.getObject(4));
             System.out.println();
         }
@@ -88,8 +86,7 @@ public class Info {
         System.out.println();
     }
 
-    public void showSeason()throws SQLException
-    {
+    public void showSeason() throws SQLException {
         PreparedStatement statement = DBConnector.dbcon.prepareStatement("SELECT * FROM season");
         System.out.println("__________________________");
         System.out.println("Сезон:");
@@ -105,7 +102,7 @@ public class Info {
         }
         while (chars.next()) {
             System.out.format("%-10d %-15d %-15s %-20.3f %-20.3f %-20.3f %-15.3f", chars.getInt(1),
-                    chars.getInt(2),  chars.getString(3),
+                    chars.getInt(2), chars.getString(3),
                     chars.getFloat(4), chars.getFloat(5), chars.getFloat(6), chars.getFloat(7));
             System.out.println();
         }
@@ -116,8 +113,7 @@ public class Info {
         System.out.println();
     }
 
-    public void showCities()throws SQLException
-    {
+    public void showCities() throws SQLException {
         PreparedStatement statement = DBConnector.dbcon.prepareStatement("SELECT * FROM cities");
         System.out.println("__________________________");
         System.out.println("Города:");
@@ -142,23 +138,23 @@ public class Info {
         statement.close();
         System.out.println();
     }
-    public void showCoach()throws SQLException
-    {
+
+    public void showCoach() throws SQLException {
         PreparedStatement statement = DBConnector.dbcon.prepareStatement("SELECT * FROM coach");
         System.out.println("__________________________");
         System.out.println("Тренеры:");
         ResultSet chars = statement.executeQuery();
         ResultSetMetaData rmChar = chars.getMetaData();
-        System.out.printf("%-10s %-15s ", rmChar.getColumnName(1),
-                rmChar.getColumnName(2));
+        System.out.printf("%-10s %-15s %-15s", rmChar.getColumnName(1),
+                rmChar.getColumnName(2), rmChar.getColumnName(3));
         System.out.println();
         if (!chars.isBeforeFirst()) {
             System.out.println("Ничего не найдено!");
             return;
         }
         while (chars.next()) {
-            System.out.format("%-10d %-15s ", chars.getInt(1),
-                    chars.getString(2));
+            System.out.format("%-10d %-15s %-15s", chars.getInt(1),
+                    chars.getString(2), chars.getString(3));
             System.out.println();
         }
         chars.close();
@@ -168,4 +164,86 @@ public class Info {
         statement.close();
         System.out.println();
     }
+
+    public void writeCoach() throws SQLException {
+        Scanner s = new Scanner(System.in);
+        int id;
+        String name;
+        String surname;
+        id = s.nextInt();
+        name = s.next();
+        surname = s.nextLine();
+        s.close();
+        PreparedStatement statement = DBConnector.dbcon.prepareStatement("INSERT INTO coach( id, name, surname ) VALUES(?, ?, ?)");
+        statement.setInt(1, id);
+        statement.setString(2, name);
+        statement.setString(3, surname);
+        statement.executeUpdate();
+
+        statement.close();
+        System.out.println(" row was added to table coach");
+    }
+
+    public void writeCountry() throws SQLException {
+        Scanner s = new Scanner(System.in);
+        int id;
+        String country;
+        id = s.nextInt();
+        country = s.nextLine();
+        s.close();
+        PreparedStatement statement = DBConnector.dbcon.prepareStatement("INSERT INTO country( id, name) VALUES(?, ?)");
+        statement.setInt(1, id);
+        statement.setString(2, country);
+        statement.executeUpdate();
+
+        statement.close();
+        System.out.println(" row was added to table country");
+    }
+
+    public void writeCities() throws SQLException {
+        Scanner s = new Scanner(System.in);
+        int id;
+        String city;
+        id = s.nextInt();
+        city = s.nextLine();
+        s.close();
+        PreparedStatement statement = DBConnector.dbcon.prepareStatement("INSERT INTO cities( id, city) VALUES(?, ?)");
+        statement.setInt(1, id);
+        statement.setString(2, city);
+        statement.executeUpdate();
+
+        statement.close();
+        System.out.println(" row was added to table city");
+    }
+
+    public void showStatistic() throws SQLException {
+        Scanner s = new Scanner(System.in);
+        String name;
+        name = s.nextLine();
+        System.out.println(name);
+        s.close();
+        String st = "SELECT findComp('"+ name+ "')";
+        PreparedStatement statement = DBConnector.dbcon.prepareStatement(st);
+        ResultSet chars = statement.executeQuery();
+        ResultSetMetaData rmChar = chars.getMetaData();
+        System.out.printf("%-50s ", rmChar.getColumnName(1)
+                );
+        System.out.println();
+        if (!chars.isBeforeFirst()) {
+            System.out.println("Ничего не найдено!");
+            return;
+        }
+        while (chars.next()) {
+            System.out.format("%-50s",
+                    chars.getString(1));
+            System.out.println();
+        }
+        chars.close();
+        statement.close();
+
+        statement.close();
+        System.out.println();
+
+    }
+
 }
